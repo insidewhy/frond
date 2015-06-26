@@ -21,6 +21,14 @@ export function first(classOrObject, ...args) {
 }
 
 /**
+ * Like first but always treats the first two arguments as object and method.
+ */
+export function mfirst(object, method, ...args) {
+  var bound = object[method].bind(object, ...args)
+  return function(first) { return bound(first) }
+}
+
+/**
  * Like _.bind but never forwards any arguments.
  * @param {Object|Function} classOrObject Optional "this" parameter.
  * @param {String} [method] - If classOrObject is an object then bind the named
@@ -29,5 +37,13 @@ export function first(classOrObject, ...args) {
  */
 export function none(classOrObject, ...args) {
   var bound = getBound(classOrObject, args)
+  return function() { return bound() }
+}
+
+/**
+ * Like none but always treats the first two arguments as object and method.
+ */
+export function mnone(object, method, ...args) {
+  var bound = object[method].bind(object, ...args)
   return function() { return bound() }
 }

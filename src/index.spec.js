@@ -1,4 +1,4 @@
-import { first, none } from './index'
+import { first, mfirst, none, mnone } from './index'
 require('chai').should()
 require('source-map-support').install()
 
@@ -9,6 +9,12 @@ describe('frond', () => {
     add(...vals) {
       return this.extra + vals.length + (vals.length > 0 ? vals[0] : 0)
     }
+  }
+
+  function StaticClass() {}
+  StaticClass.extra = 5
+  StaticClass.add = function(...vals) {
+    return this.extra + vals.length + (vals.length > 0 ? vals[0] : 0)
   }
 
   describe('first', () => {
@@ -26,6 +32,12 @@ describe('frond', () => {
     })
   })
 
+  describe('mfirst', () => {
+    it('forwards only first argument with correct binding', () => {
+      mfirst(StaticClass, 'add')(10, 11, 12).should.equal(16)
+    })
+  })
+
   describe('none', () => {
     it('forwards no arguments', () => {
       none((...args) => { args.should.eql([]) })(1,2,3)
@@ -40,4 +52,11 @@ describe('frond', () => {
       none(obj, 'add')(10, 11, 12).should.equal(4)
     })
   })
+
+  describe('mnone', () => {
+    it('forwards no arguments with correct binding', () => {
+      mnone(StaticClass, 'add')(10, 11, 12).should.equal(5)
+    })
+  })
+
 })
