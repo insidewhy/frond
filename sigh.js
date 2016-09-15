@@ -1,9 +1,13 @@
 var glob, babel, write, pipeline, mocha
 
 module.exports = function(pipelines) {
+  var babelOpts = {
+    presets: [[ 'es2015', { loose: true }], 'stage-2']
+  }
+
   pipelines.build = [
     glob({ basePath: 'src' }, '*.js'),
-    babel({ modules: 'common' }),
+    babel(babelOpts),
     write('.')
   ]
 
