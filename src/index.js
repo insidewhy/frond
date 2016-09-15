@@ -47,3 +47,5 @@ export function mnone(object, method, ...args) {
   var bound = object[method].bind(object, ...args)
   return function() { return bound() }
 }
+
+export default { first, mfirst, none, mnone }
